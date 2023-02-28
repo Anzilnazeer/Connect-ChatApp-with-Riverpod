@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "8482111292",
+    "project_id": "connect-riverpod",
+    "storage_bucket": "connect-riverpod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8482111292:android:98d16b74987c6784eda839",
+        "android_client_info": {
+          "package_name": "com.example.connect_riverpod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8482111292-0s1eeata42anl57lucfh7rmn7obk4r54.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.connect_riverpod",
+            "certificate_hash": "098de6a460d0ab83eef33f2732cfac5305cfa211"
+          }
+        },
+        {
+          "client_id": "8482111292-qk3c9s07m5mab6a0tvafq0h0vkhichfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.connect_riverpod",
+            "certificate_hash": "6e864582c08c07ff430250fbe5d41b8c9fa57f14"
+          }
+        },
+        {
+          "client_id": "8482111292-3n1vgc89i7em83jn6lqr6ve5sqjhrrpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL5BXYn50hhnl9A0uVhYpFiZcXVJT-Wio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8482111292-3n1vgc89i7em83jn6lqr6ve5sqjhrrpg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "8482111292-6jfffsfigbv77ecukpq2lvlsj4fan8k7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.connectRiverpod"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
