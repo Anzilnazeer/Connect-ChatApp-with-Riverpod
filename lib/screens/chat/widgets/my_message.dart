@@ -1,4 +1,5 @@
 import 'package:connect_riverpod/constants/colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 class MyMessage extends StatelessWidget {
   final String message;
   final String date;
-  const MyMessage({super.key, required this.message, required this.date});
+  final bool isSeen;
+  // final MessageEnum type;
+  const MyMessage(
+      {super.key,
+      required this.message,
+      required this.date,
+      required this.isSeen
+      // required this.type
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +36,12 @@ class MyMessage extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Stack(children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height / 55, horizontal: size.width / 20),
-              child: Text(
-                message,
-                style: GoogleFonts.poppins(color: sendersColor, fontSize: 15),
-              ),
-            ),
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height / 55, horizontal: size.width / 20),
+                child: Text(
+                  message,
+                  style: GoogleFonts.poppins(color: sendersColor, fontSize: 15),
+                )),
             Positioned(
               bottom: 3,
               right: 3,
@@ -46,9 +54,11 @@ class MyMessage extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  const Icon(
-                    FontAwesomeIcons.checkDouble,
-                    color: sendersColor,
+                  Icon(
+                    isSeen
+                        ? FontAwesomeIcons.checkDouble
+                        : FontAwesomeIcons.check,
+                    color: isSeen ? sendersColor : textfieldColor,
                     size: 10,
                   )
                 ],

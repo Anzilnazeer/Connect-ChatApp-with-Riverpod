@@ -37,7 +37,7 @@ class SenderMessage extends StatelessWidget {
             ),
             Positioned(
               bottom: 4,
-              right: 3,
+              right: 2,
               child: Row(
                 children: [
                   Text(
@@ -47,11 +47,6 @@ class SenderMessage extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  const Icon(
-                    FontAwesomeIcons.checkDouble,
-                    color: messageColor,
-                    size: 10,
-                  )
                 ],
               ),
             )

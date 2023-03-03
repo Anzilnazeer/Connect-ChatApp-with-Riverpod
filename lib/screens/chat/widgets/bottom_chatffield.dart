@@ -1,5 +1,7 @@
+import 'dart:io';
 
-
+import 'package:connect_riverpod/model/message_model.dart';
+import 'package:connect_riverpod/utils/common/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,6 +33,22 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     });
   }
 
+  // void selectFile(
+  //   File file,
+  //   MessageEnum messageEnum,
+  // ) {
+  //   ref
+  //       .read(chatControllerProvider)
+  //       .sendFileMessage(context, file, widget.reciverUserId, messageEnum);
+  // }
+
+  // void selectImage() async {
+  //   File? image = await pickImageFromGallery(context);
+  //   if (image != null) {
+  //     selectFile(image, MessageEnum.image);
+  //   }
+  // }
+
   @override
   void dispose() {
     super.dispose();
@@ -55,7 +73,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                 size: 20,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: (){},
               icon: const Icon(
                 FontAwesomeIcons.paperclip,
                 color: scafoldcolor,

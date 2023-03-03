@@ -1,18 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect_riverpod/screens/connect_profile.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:im_animations/im_animations.dart';
 import '../constants/colors.dart';
 import '../auth/controller/auth_controller.dart';
-import '../auth/repository/auth_repository.dart';
-
+import '../model/chat_contact.dart';
+import 'chat/controller/chat_controller.dart';
 import 'contact_list.dart';
 import 'landing_page.dart';
 import 'select_contacts/screens/select_contacts_screen.dart';
@@ -171,16 +168,38 @@ class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
                 ConnectStatus(),
                 ConnectCalls(),
               ]),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: floatingbuttonColor,
-                onPressed: () {
-                  Navigator.pushNamed(context, SelectContactScreen.routeName);
-                },
-                child: const Icon(
-                  FontAwesomeIcons.user,
-                  color: textColor,
-                ),
-              ),
+              floatingActionButton: StreamBuilder<List<ChatContact>>(
+                  stream: ref.watch(chatControllerProvider).chatContacts(),
+                  builder: (context, snapshot) {
+                    return Padding(
+                      padding: EdgeInsets.all(size.width * 0.04),
+                      child: FloatingActionButton(
+                        backgroundColor: floatingbuttonColor,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, SelectContactScreen.routeName);
+                        },
+                        child: ColorSonar(
+                          innerWaveColor:
+                              const Color.fromARGB(239, 181, 210, 223),
+                          middleWaveColor:
+                              const Color.fromARGB(255, 128, 171, 204),
+                          outerWaveColor:
+                              const Color.fromARGB(78, 164, 186, 209),
+                          contentAreaRadius: 25,
+                          waveFall: 7,
+                          wavesDisabled: snapshot.data!.isEmpty ? false : true,
+                          waveMotionEffect: Curves.linear,
+                          waveMotion: WaveMotion.smooth,
+                          duration: const Duration(seconds: 2),
+                          child: const Icon(
+                            FontAwesomeIcons.user,
+                            color: textColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
             )));
   }
 }

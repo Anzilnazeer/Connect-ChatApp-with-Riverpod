@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:intl/intl.dart';
 import '../../../model/message_model.dart';
 import '../controller/chat_controller.dart';
@@ -51,11 +50,19 @@ class _ChatListState extends ConsumerState<ChatList> {
             itemBuilder: (context, index) {
               final messageData = snapshot.data![index];
               var timeSent = DateFormat.Hm().format(messageData.timeSent);
+              if (!messageData.isSeen &&
+                  messageData.recieverId ==
+                      FirebaseAuth.instance.currentUser!.uid) {
+                ref.read(chatControllerProvider).chatSeen(
+                    context, widget.reciverUserId, messageData.messageId);
+              }
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return MyMessage(
                   message: messageData.text,
                   date: timeSent,
+                  isSeen: messageData.isSeen,
+                  // type: messageData.type,
                 );
               }
               return SenderMessage(

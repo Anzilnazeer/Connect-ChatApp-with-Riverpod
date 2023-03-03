@@ -3,18 +3,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect_riverpod/auth/repository/auth_repository.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/size.dart';
-
-import '../utils/widgets/custom_button.dart';
-import 'landing_page.dart';
 
 class ConnectProfile extends StatefulWidget {
   const ConnectProfile({

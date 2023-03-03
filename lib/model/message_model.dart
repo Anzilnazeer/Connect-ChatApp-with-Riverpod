@@ -1,7 +1,4 @@
 
-
-import 'package:connect_riverpod/utils/common/enums/enums.dart';
-
 class Message {
   final String senderId;
   final String recieverId;
@@ -38,7 +35,7 @@ class Message {
       senderId: map['senderId'] ?? '',
       recieverId: map['reciverId'] ?? '',
       text: map['text'] ?? '',
-      // type: (map['type']as String).toEnum(),
+      // type: map['type'] ,
       timeSent: DateTime.fromMicrosecondsSinceEpoch(
         map['timeSent'],
       ),
@@ -46,4 +43,16 @@ class Message {
       isSeen: map['isSeen'] ?? false,
     );
   }
+}
+
+enum MessageEnum {
+  text('text'),
+  image('image'),
+  audio('audio'),
+  video('video'),
+  gif('gif');
+
+  const MessageEnum(this.type);
+
+  final String type;
 }

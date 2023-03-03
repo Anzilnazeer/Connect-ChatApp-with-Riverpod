@@ -1,12 +1,13 @@
 
 
-
+import 'package:connect_riverpod/auth/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../auth/controller/auth_controller.dart';
 import '../../../model/chat_contact.dart';
 import '../../../model/message_model.dart';
+import '../../../model/user_model.dart';
 import '../repository/chat_repository.dart';
 
 final chatControllerProvider = Provider(
@@ -47,4 +48,17 @@ class ChatController {
           ),
         );
   }
+
+  void chatSeen(
+    BuildContext context,
+    String reciverUserId,
+    String messageId,
+  ) {
+    chatRepository.chatSeen(
+      context,
+      reciverUserId,
+      messageId,
+    );
+  }
+
 }
