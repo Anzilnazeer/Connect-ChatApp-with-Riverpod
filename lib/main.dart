@@ -8,7 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'auth/controller/auth_controller.dart';
 import 'screens/landing_page.dart';
@@ -42,7 +42,16 @@ class MyApp extends ConsumerWidget {
             error: (err, trace) {
               return ErrorScreen(error: err.toString());
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => Container(
+              color: scafoldcolor,
+              child: Center(
+                child: LoadingAnimationWidget.flickr(
+                  leftDotColor: messageColor,
+                  rightDotColor: sendersColor,
+                  size: 80,
+                ),
+              ),
+            ),
           ),
     );
   }

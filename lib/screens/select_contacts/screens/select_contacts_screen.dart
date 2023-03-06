@@ -6,6 +6,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../utils/widgets/error.dart';
 
@@ -59,20 +60,7 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
                 autofocus: true,
                 decoration: const InputDecoration(
                     hintText: 'search contact', border: InputBorder.none),
-                onChanged: (value) {
-                  searchList.clear();
-                  for (var i in contacts) {
-                    if (i.displayName
-                        .toLowerCase()
-                        .contains(value.toLowerCase())) {
-                      searchList.add(i);
-                    }
-                    setState(() {
-                      searchList;
-                    });
-                  }
-                },
-              )
+                onChanged: (value) => runFilter(value))
             : Text(
                 'select contacts',
                 style: GoogleFonts.poppins(color: textColor, fontSize: 20),
@@ -118,7 +106,8 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       tileColor: const Color.fromARGB(35, 48, 136, 244),
                       title: Text(contact.displayName,
-                          style: GoogleFonts.poppins(fontSize: 19)),
+                          maxLines: 1,
+                          style: GoogleFonts.poppins(fontSize: 15)),
                       leading: contact.photo == null
                           ? const CircleAvatar(
                               backgroundImage: NetworkImage(
@@ -131,7 +120,7 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
                             ),
                       trailing: Text(
                         contact.phones[0].number,
-                        style: GoogleFonts.aBeeZee(),
+                        style: GoogleFonts.aBeeZee(fontSize: 12),
                       ),
                     ),
                   ),
@@ -139,7 +128,13 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
               }),
             ),
             error: (err, trace) => ErrorScreen(error: err.toString()),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: messageColor,
+                rightDotColor: sendersColor,
+                size: 70,
+              ),
+            ),
           ),
     );
   }

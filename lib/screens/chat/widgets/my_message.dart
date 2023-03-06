@@ -37,7 +37,7 @@ class MyMessage extends StatelessWidget {
           child: Stack(children: [
             Padding(
                 padding: EdgeInsets.symmetric(
-                    vertical: size.height / 55, horizontal: size.width / 20),
+                    vertical: size.height / 54, horizontal: size.width / 18),
                 child: Text(
                   message,
                   style: GoogleFonts.poppins(color: sendersColor, fontSize: 15),
@@ -49,17 +49,16 @@ class MyMessage extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: TextStyle(color: textfieldColor, fontSize: 10),
+                    style: TextStyle(
+                        color: textfieldColor, fontSize: size.width * 0.022),
                   ),
                   const SizedBox(
                     width: 5,
                   ),
                   Icon(
-                    isSeen
-                        ? FontAwesomeIcons.checkDouble
-                        : FontAwesomeIcons.check,
-                    color: isSeen ? sendersColor : textfieldColor,
-                    size: 10,
+                    isSeen ? Icons.done_all_rounded : Icons.check,
+                    color: isSeen ? Colors.blue : textfieldColor,
+                    size: 11,
                   )
                 ],
               ),

@@ -45,6 +45,8 @@ dependencies:
   google_sign_in: ^6.0.1
   im_animations: ^0.1.2
   image_picker: ^0.8.6+3
+  loader_skeleton: ^0.0.4
+  loading_animation_widget: ^1.2.0+4
   shimmer: ^2.0.0
   uuid: ^3.0.7
 

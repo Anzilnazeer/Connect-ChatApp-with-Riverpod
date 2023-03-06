@@ -160,32 +160,32 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            color: buttonColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Icon(
-                              FontAwesomeIcons.google,
-                              color: scafoldcolor,
-                              size: 23,
-                            ),
-                            Text(
-                              'Sign in with Google',
-                              style: GoogleFonts.poppins(
-                                  fontSize: 23, color: scafoldcolor),
-                            )
-                          ],
-                        )),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                //   child: GestureDetector(
+                //     onTap: () {},
+                //     child: Container(
+                //         padding: const EdgeInsets.all(15),
+                //         decoration: BoxDecoration(
+                //             color: buttonColor,
+                //             borderRadius: BorderRadius.circular(10)),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //           children: [
+                //             const Icon(
+                //               FontAwesomeIcons.google,
+                //               color: scafoldcolor,
+                //               size: 23,
+                //             ),
+                //             Text(
+                //               'Sign in with Google',
+                //               style: GoogleFonts.poppins(
+                //                   fontSize: 23, color: scafoldcolor),
+                //             )
+                //           ],
+                //         )),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomButton(

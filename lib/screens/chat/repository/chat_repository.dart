@@ -32,7 +32,6 @@ class ChatRepository {
         .collection('users')
         .doc(auth.currentUser!.uid)
         .collection('chats')
-        .where('contactId', isNotEqualTo: auth.currentUser!.uid)
         .snapshots()
         .asyncMap((event) async {
       List<ChatContact> contacts = [];
@@ -227,6 +226,4 @@ class ChatRepository {
       showSnackBar(context: context, content: e.toString());
     }
   }
-
-
 }

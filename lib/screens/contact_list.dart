@@ -1,9 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect_riverpod/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:loader_skeleton/loader_skeleton.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../auth/repository/auth_repository.dart';
 import '../model/chat_contact.dart';
 
 import 'chat/controller/chat_controller.dart';
@@ -29,22 +34,9 @@ class ContactList extends ConsumerWidget {
                 return ListView.builder(
                   itemCount: 15,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Shimmer.fromColors(
-                        baseColor: const Color.fromARGB(255, 176, 176, 176),
-                        highlightColor: const Color.fromARGB(255, 58, 119, 150),
-                        child: Card(
-                          color: const Color.fromARGB(35, 48, 136, 244),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.02,
-                          ),
-                          child: const ListTile(),
-                        ),
-                      ),
+                    return CardSkeleton(
+                      isCircularImage: true,
+                      isBottomLinesActive: false,
                     );
                   },
                 );
@@ -77,11 +69,24 @@ class ContactList extends ConsumerWidget {
                                     'uid': chatContactData.contactId,
                                   });
                             },
-                            leading: chatContactData.profilePic.isEmpty
-                                ? CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        chatContactData.profilePic),
-                                    radius: 25,
+                            leading: chatContactData.profilePic == null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        size.height * 0.2),
+                                    child: CachedNetworkImage(
+                                      width: size.height * .07,
+                                      fit: BoxFit.cover,
+                                      imageUrl: AuthRepository.user!.profilePic,
+                                      placeholder: (context, url) =>
+                                          LoadingAnimationWidget.discreteCircle(
+                                              color: messageColor, size: 90),
+                                      errorWidget: (context, url, error) =>
+                                          const CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            'https://static.toiimg.com/thumb/resizemode-4,msid-76729750,imgsize-249247,width-720/76729750.jpg'),
+                                        radius: 45,
+                                      ),
+                                    ),
                                   )
                                 : const CircleAvatar(
                                     backgroundImage: NetworkImage(
@@ -92,8 +97,11 @@ class ContactList extends ConsumerWidget {
                               chatContactData.name,
                               style: GoogleFonts.poppins(letterSpacing: 2),
                             ),
-                            subtitle: Text(chatContactData.lastMessage),
-                            trailing: Text(DateFormat.Hm()
+                            subtitle: Text(
+                              chatContactData.lastMessage,
+                              maxLines: 1,
+                            ),
+                            trailing: Text(DateFormat.jm()
                                 .format(chatContactData.timeSent)),
                           )),
                     );
@@ -103,8 +111,7 @@ class ContactList extends ConsumerWidget {
                 return Center(
                   child: Text(
                     'No connections yet',
-                    style:
-                        GoogleFonts.poppins(letterSpacing: 2, fontSize: 20),
+                    style: GoogleFonts.poppins(letterSpacing: 2, fontSize: 20),
                   ),
                 );
               }

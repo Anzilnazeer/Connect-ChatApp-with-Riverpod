@@ -171,6 +171,9 @@ class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
               floatingActionButton: StreamBuilder<List<ChatContact>>(
                   stream: ref.watch(chatControllerProvider).chatContacts(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox();
+                    }
                     return Padding(
                       padding: EdgeInsets.all(size.width * 0.04),
                       child: FloatingActionButton(
@@ -183,7 +186,7 @@ class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
                           innerWaveColor:
                               const Color.fromARGB(239, 181, 210, 223),
                           middleWaveColor:
-                              const Color.fromARGB(255, 128, 171, 204),
+                              const Color.fromARGB(161, 128, 171, 204),
                           outerWaveColor:
                               const Color.fromARGB(78, 164, 186, 209),
                           contentAreaRadius: 25,

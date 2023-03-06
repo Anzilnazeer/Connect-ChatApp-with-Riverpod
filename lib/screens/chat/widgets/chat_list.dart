@@ -49,7 +49,7 @@ class _ChatListState extends ConsumerState<ChatList> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               final messageData = snapshot.data![index];
-              var timeSent = DateFormat.Hm().format(messageData.timeSent);
+              var timeSent = DateFormat.jm().format(messageData.timeSent);
               if (!messageData.isSeen &&
                   messageData.recieverId ==
                       FirebaseAuth.instance.currentUser!.uid) {
