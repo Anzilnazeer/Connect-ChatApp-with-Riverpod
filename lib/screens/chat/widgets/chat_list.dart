@@ -46,28 +46,31 @@ class _ChatListState extends ConsumerState<ChatList> {
           return ListView.builder(
             controller: messageController,
             physics: const BouncingScrollPhysics(),
-            itemCount: snapshot.data!.length,
+            itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
               final messageData = snapshot.data![index];
               var timeSent = DateFormat.jm().format(messageData.timeSent);
-              if (!messageData.isSeen &&
-                  messageData.recieverId ==
-                      FirebaseAuth.instance.currentUser!.uid) {
-                ref.read(chatControllerProvider).chatSeen(
-                    context, widget.reciverUserId, messageData.messageId);
+              final currentUser = FirebaseAuth.instance.currentUser;
+              if (currentUser != null) {
+                if (!messageData.isSeen &&
+                    messageData.recieverId == currentUser.uid) {
+                  ref.read(chatControllerProvider).chatSeen(
+                      context, widget.reciverUserId, messageData.messageId);
+                }
+                if (messageData.senderId == currentUser.uid) {
+                  return MyMessage(
+                    message: messageData.text,
+                    date: timeSent,
+                    isSeen: messageData.isSeen,
+                    type: messageData.type,
+                  );
+                }
               }
-              if (messageData.senderId ==
-                  FirebaseAuth.instance.currentUser!.uid) {
-                return MyMessage(
-                  message: messageData.text,
-                  date: timeSent,
-                  isSeen: messageData.isSeen,
-                  // type: messageData.type,
-                );
-              }
+
               return SenderMessage(
                 message: messageData.text,
                 date: timeSent,
+                type: messageData.type,
               );
             },
           );

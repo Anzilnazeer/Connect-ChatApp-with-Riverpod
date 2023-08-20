@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../auth/controller/auth_controller.dart';
@@ -24,9 +25,19 @@ class ConnectChatPage extends ConsumerWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: scafoldcolor,
         appBar: AppBar(
-          toolbarHeight: 100,
-          backgroundColor: textColor,
+          leading: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Icon(
+              FontAwesomeIcons.angleLeft,
+              color: buttonColor,
+              size: 20.w,
+            ),
+          ),
+          toolbarHeight: 100.h,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(255, 22, 54, 83),
           title: StreamBuilder<UserModel>(
             stream: ref.read(authControllerProvider).userDataById(uid),
             builder: (context, snapshot) {
@@ -52,7 +63,7 @@ class ConnectChatPage extends ConsumerWidget {
                           'offline',
                           style: GoogleFonts.poppins(
                               fontSize: 11,
-                              color: const Color.fromARGB(110, 255, 255, 255)),
+                              color: const Color.fromARGB(108, 186, 186, 186)),
                         )
                 ],
               );
@@ -79,7 +90,7 @@ class ConnectChatPage extends ConsumerWidget {
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),

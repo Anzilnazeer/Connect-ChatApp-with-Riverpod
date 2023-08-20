@@ -1,21 +1,24 @@
 import 'package:connect_riverpod/constants/colors.dart';
+import 'package:connect_riverpod/screens/chat/widgets/display_file.dart';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../utils/common/enums/message_enum.dart';
 
 class MyMessage extends StatelessWidget {
   final String message;
   final String date;
   final bool isSeen;
-  // final MessageEnum type;
+  final MessageEnum type;
   const MyMessage(
       {super.key,
       required this.message,
       required this.date,
-      required this.isSeen
-      // required this.type
-      });
+      required this.isSeen,
+      required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -23,24 +26,29 @@ class MyMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 45),
+        constraints: BoxConstraints(maxWidth: 330.w, maxHeight: 500.h),
         child: Card(
           elevation: 5,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15))),
-          color: messageColor,
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.w),
+          ),
+          color: const Color.fromARGB(255, 221, 221, 221),
+          margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
           child: Stack(children: [
             Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.height / 54, horizontal: size.width / 18),
-                child: Text(
-                  message,
-                  style: GoogleFonts.poppins(color: sendersColor, fontSize: 15),
+                padding: type == MessageEnum.text
+                    ? EdgeInsets.symmetric(vertical: 15.h, horizontal: 25.w)
+                    : type == MessageEnum.image
+                        ? EdgeInsets.only(bottom: 15.w, top: 15.w)
+                        : type == MessageEnum.video
+                            ? EdgeInsets.only(bottom: 15.w, top: 15.w)
+                            : EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
+                child: DisplayFile(
+                  message: message,
+                  type: type,
+                  color: messageColor,
+                  activeColor: scafoldcolor,
                 )),
             Positioned(
               bottom: 3,
@@ -49,15 +57,16 @@ class MyMessage extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: TextStyle(
-                        color: textfieldColor, fontSize: size.width * 0.022),
+                    style: TextStyle(color: messageColor, fontSize: 10.sp),
                   ),
-                  const SizedBox(
-                    width: 5,
+                  SizedBox(
+                    width: 5.w,
                   ),
                   Icon(
                     isSeen ? Icons.done_all_rounded : Icons.check,
-                    color: isSeen ? Colors.blue : textfieldColor,
+                    color: isSeen
+                        ? Colors.blue
+                        : const Color.fromARGB(164, 0, 0, 0),
                     size: 11,
                   )
                 ],

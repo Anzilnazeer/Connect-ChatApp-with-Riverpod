@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'auth/controller/auth_controller.dart';
@@ -27,32 +28,39 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'connect',
-      theme: ThemeData(primaryColor: textColor),
-      onGenerateRoute: (settings) => generateRoute(settings),
-      home: ref.watch(userDataAuthProvider).when(
-            data: (user) {
-              if (user == null) {
-                return const LandingPage();
-              }
-              return const ConnectMainPage();
-            },
-            error: (err, trace) {
-              return ErrorScreen(error: err.toString());
-            },
-            loading: () => Container(
-              color: scafoldcolor,
-              child: Center(
-                child: LoadingAnimationWidget.flickr(
-                  leftDotColor: messageColor,
-                  rightDotColor: sendersColor,
-                  size: 80,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'connect',
+          theme: ThemeData(primaryColor: textColor),
+          onGenerateRoute: (settings) => generateRoute(settings),
+          home: ref.watch(userDataAuthProvider).when(
+                data: (user) {
+                  if (user == null) {
+                    return const LandingPage();
+                  }
+                  return const ConnectMainPage();
+                },
+                error: (err, trace) {
+                  return ErrorScreen(error: err.toString());
+                },
+                loading: () => Container(
+                  color: scafoldcolor,
+                  child: Center(
+                    child: LoadingAnimationWidget.flickr(
+                      leftDotColor: messageColor,
+                      rightDotColor: sendersColor,
+                      size: 80,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+        );
+      },
     );
   }
 }
