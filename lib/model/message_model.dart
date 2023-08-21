@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:connect_riverpod/utils/common/enums/message_enum.dart';
 
 class Message {
@@ -8,8 +11,14 @@ class Message {
   final DateTime timeSent;
   final String messageId;
   final bool isSeen;
+  final String repliedText;
+  final String repliedTo;
+  final MessageEnum repliedMessageType;
 
   Message({
+    required this.repliedMessageType,
+    required this.repliedText,
+    required this.repliedTo,
     required this.senderId,
     required this.recieverId,
     required this.text,
@@ -20,30 +29,32 @@ class Message {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'senderId': senderId,
-      'reciverId': recieverId,
+      'recieverId': recieverId,
       'text': text,
       'type': type.type,
-      'timeSent': timeSent.microsecondsSinceEpoch,
+      'timeSent': timeSent.millisecondsSinceEpoch,
       'messageId': messageId,
       'isSeen': isSeen,
+      'repliedText': repliedText,
+      'repliedTo': repliedTo,
+      'repliedMessageType': repliedMessageType.type,
     };
   }
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      senderId: map['senderId'] ?? '',
-      recieverId: map['reciverId'] ?? '',
-      text: map['text'] ?? '',
-      type: map.containsKey('type')
-          ? (map['type'] as String).toEnum()
-          : MessageEnum.text,
-      timeSent: DateTime.fromMicrosecondsSinceEpoch(
-        map['timeSent'],
-      ),
-      messageId: map['messageId'] ?? '',
-      isSeen: map['isSeen'] ?? false,
+      senderId: map['senderId'] as String,
+      recieverId: map['recieverId'] as String,
+      text: map['text'] as String,
+      type: (map['type'] as String).toEnum(),
+      timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent'] as int),
+      messageId: map['messageId'] as String,
+      isSeen: map['isSeen'] as bool,
+      repliedText: map['repliedText'] as String,
+      repliedTo: map['repliedTo'] as String,
+      repliedMessageType: (map['repliedMessageType'] as String).toEnum(),
     );
   }
 }

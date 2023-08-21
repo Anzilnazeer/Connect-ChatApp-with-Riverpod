@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const scafoldcolor = Color.fromARGB(255, 29, 53, 62);
+const scafoldcolor = Color.fromARGB(255, 23, 44, 51);
 const textColor = Color.fromARGB(255, 154, 238, 255);
 const buttonColor = Color.fromARGB(255, 134, 200, 255);
 final textfieldColor = Colors.grey[200];

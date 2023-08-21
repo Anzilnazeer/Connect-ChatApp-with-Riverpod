@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connect_riverpod/utils/common/enums/message_enum.dart';
+import 'package:connect_riverpod/utils/common/providers/message_reply_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -39,18 +40,21 @@ class ChatController {
     String text,
     String recieverId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
-            context: context,
-            text: text,
-            reciverUserId: recieverId,
-            senderUser: value!,
-          ),
+              context: context,
+              text: text,
+              reciverUserId: recieverId,
+              senderUser: value!,
+              messageReply: messageReply),
         );
+    ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendFileMessage(BuildContext context, File file, String recieverId,
       MessageEnum messageEnum) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendFileMessage(
               context: context,
@@ -58,8 +62,10 @@ class ChatController {
               recieverUserId: recieverId,
               senderUserData: value!,
               messageEnum: messageEnum,
+              messageReply: messageReply,
               ref: ref),
         );
+    ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
   void chatSeen(

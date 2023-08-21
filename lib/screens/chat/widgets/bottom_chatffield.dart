@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:connect_riverpod/model/message_model.dart';
+import 'package:connect_riverpod/screens/chat/widgets/message_reply.dart';
+import 'package:connect_riverpod/utils/common/providers/message_reply_provider.dart';
 import 'package:connect_riverpod/utils/common/utils.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -154,40 +157,45 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   @override
   Widget build(BuildContext context) {
+    final messageReply = ref.watch(messageReplyProvider);
+    final isShowMessageReply = messageReply != null;
     return Column(
       children: [
+        isShowMessageReply ? const MessageReplyPreview() : const SizedBox(),
         Container(
-          height: 65,
+          height: 65.h,
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 22, 54, 83),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: Row(
               children: [
                 IconButton(
                     onPressed: () {
                       selectImage();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.camera,
                       color: buttonColor,
-                      size: 20,
+                      size: 20.w,
                     )),
                 IconButton(
                     onPressed: () {
                       selectVideo();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.paperclip,
                       color: buttonColor,
-                      size: 20,
+                      size: 20.w,
                     )),
                 Expanded(
                     child: TextFormField(
                   enableInteractiveSelection: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   focusNode: focusnode,
+                  maxLines: 1,
+                  scrollPhysics: const BouncingScrollPhysics(),
                   controller: _messageController,
                   onChanged: (value) {
                     if (value.isNotEmpty) {
@@ -200,25 +208,25 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                       });
                     }
                   },
-                  style: const TextStyle(color: scafoldcolor),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       prefixIcon: IconButton(
                           onPressed: () {
                             toggleEmojiContainer();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             FontAwesomeIcons.faceSmile,
-                            color: Color.fromARGB(255, 228, 228, 228),
-                            size: 20,
+                            color: const Color.fromARGB(255, 228, 228, 228),
+                            size: 20.w,
                           )),
                       fillColor: const Color.fromARGB(81, 158, 158, 158),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(5.w),
                           borderSide: BorderSide.none),
                       hintText: 'Type your message..',
                       hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 212, 212, 212)),
-                      contentPadding: const EdgeInsets.only(left: 30),
+                          color: Color.fromARGB(255, 255, 255, 255)),
+                      contentPadding: EdgeInsets.only(left: 30.w),
                       filled: true),
                 )),
                 IconButton(
@@ -238,7 +246,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
         Visibility(
           visible: isShowEmoji,
           child: SizedBox(
-            height: 310,
+            height: 310.h,
             child: EmojiPicker(
               onEmojiSelected: (category, emoji) {
                 setState(() => _messageController.text += emoji.emoji);
