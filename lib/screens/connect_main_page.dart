@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:connect_riverpod/screens/connect_profile.dart';
+import 'package:connect_riverpod/screens/status/screens/confirm_status.dart';
+import 'package:connect_riverpod/screens/status/screens/status_contact_screen.dart';
+import 'package:connect_riverpod/utils/common/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +20,6 @@ import 'contact_list.dart';
 import 'landing_page.dart';
 import 'select_contacts/screens/select_contacts_screen.dart';
 import 'connect_calls.dart';
-import 'connect_status.dart';
 
 class ConnectMainPage extends ConsumerStatefulWidget {
   static const routeName = '/main-screen';
@@ -26,10 +30,12 @@ class ConnectMainPage extends ConsumerStatefulWidget {
 }
 
 class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  late TabController tabBarController;
   @override
   void initState() {
     super.initState();
+    tabBarController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addObserver(this);
     ref.read(authControllerProvider).getUserData();
   }
@@ -80,6 +86,7 @@ class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
                   onTap: (value) {
                     value = tabIndex;
                   },
+                  controller: tabBarController,
                   indicatorColor: Colors.transparent,
                   indicatorWeight: 0.1.w,
                   unselectedLabelColor:
@@ -155,49 +162,57 @@ class _ConnectMainPageState extends ConsumerState<ConnectMainPage>
                 )
               ],
             ),
-            body: const TabBarView(children: [
+            body: TabBarView(controller: tabBarController, children: const [
               ContactList(),
-              ConnectStatus(),
+              StatusContactsScreen(),
               ConnectCalls(),
             ]),
-            floatingActionButton: tabIndex == 0
-                ? StreamBuilder<List<ChatContact>>(
-                    stream: ref.watch(chatControllerProvider).chatContacts(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox();
-                      }
-                      return Padding(
-                        padding: EdgeInsets.all(24.w),
-                        child: FloatingActionButton(
-                          backgroundColor: floatingbuttonColor,
-                          onPressed: () {
+            floatingActionButton: StreamBuilder<List<ChatContact>>(
+                stream: ref.watch(chatControllerProvider).chatContacts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox();
+                  }
+                  return Padding(
+                    padding: EdgeInsets.all(24.w),
+                    child: FloatingActionButton(
+                      backgroundColor: floatingbuttonColor,
+                      onPressed: () async {
+                        if (tabBarController.index == 0) {
+                          Navigator.pushNamed(
+                              context, SelectContactScreen.routeName);
+                        } else {
+                          File? pickedImage =
+                              await pickImageFromGallery(context);
+                          if (pickedImage != null) {
                             Navigator.pushNamed(
-                                context, SelectContactScreen.routeName);
-                          },
-                          child: ColorSonar(
-                            innerWaveColor:
-                                const Color.fromARGB(239, 181, 210, 223),
-                            middleWaveColor:
-                                const Color.fromARGB(161, 128, 171, 204),
-                            outerWaveColor:
-                                const Color.fromARGB(78, 164, 186, 209),
-                            contentAreaRadius: 25,
-                            waveFall: 7,
-                            wavesDisabled:
-                                snapshot.data!.isEmpty ? false : true,
-                            waveMotionEffect: Curves.linear,
-                            waveMotion: WaveMotion.smooth,
-                            duration: const Duration(seconds: 2),
-                            child: const Icon(
-                              FontAwesomeIcons.user,
-                              color: floatingbuttonColor,
-                            ),
-                          ),
+                                context, ConfirmStatus.routeName,
+                                arguments: pickedImage);
+                          }
+                        }
+                      },
+                      child: ColorSonar(
+                        innerWaveColor:
+                            const Color.fromARGB(239, 181, 210, 223),
+                        middleWaveColor:
+                            const Color.fromARGB(161, 128, 171, 204),
+                        outerWaveColor: const Color.fromARGB(78, 164, 186, 209),
+                        contentAreaRadius: 25,
+                        waveFall: 7,
+                        wavesDisabled: snapshot.data!.isEmpty ? false : true,
+                        waveMotionEffect: Curves.linear,
+                        waveMotion: WaveMotion.smooth,
+                        duration: const Duration(seconds: 2),
+                        child: Icon(
+                          tabBarController.index == 0
+                              ? FontAwesomeIcons.user
+                              : FontAwesomeIcons.a,
+                          color: floatingbuttonColor,
                         ),
-                      );
-                    })
-                : FloatingActionButton(onPressed: () {})),
+                      ),
+                    ),
+                  );
+                })),
       ),
     );
   }

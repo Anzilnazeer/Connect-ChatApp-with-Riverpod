@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect_riverpod/constants/size.dart';
+import 'package:connect_riverpod/screens/status/controller/status_controller.dart';
 import 'package:connect_riverpod/utils/common/skeletons/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +14,7 @@ import 'package:connect_riverpod/constants/colors.dart';
 
 import '../auth/repository/auth_repository.dart';
 import '../model/chat_contact.dart';
+import '../model/status_model.dart';
 import 'chat/controller/chat_controller.dart';
 import 'chat/screens/mobile_chat_screen.dart';
 
@@ -47,23 +49,41 @@ class ContactList extends ConsumerWidget {
                   height: 10.h,
                 ),
                 SizedBox(
-                  height: 100.h, // Adjust the height as needed
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 5, // Adjust the item count as needed
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 32.w,
-                              child: const Icon(Icons.person),
+                  height: 100.h,
+                  child: FutureBuilder<List<Status>>(
+                    future:
+                        ref.read(statusControllerProvider).getStatus(context),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        // Handle the case when there's no data to display.
+                        return const Center(
+                            child: Text('No stories available'));
+                      }
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          var statusData = snapshot.data![index];
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 32.w,
+                                  backgroundImage:
+                                      NetworkImage(statusData.profilePic),
+                                ),
+                                Text(statusData.userName),
+                              ],
                             ),
-                            const Text('Angel'),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
                   ),

@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:connect_riverpod/screens/connect_main_page.dart';
+import 'package:connect_riverpod/screens/status/screens/confirm_status.dart';
+import 'package:connect_riverpod/screens/status/screens/status_contact_screen.dart';
 import 'package:connect_riverpod/utils/widgets/error.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +36,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case ConnectMainPage.routeName:
       return MaterialPageRoute(
         builder: (context) => const ConnectMainPage(),
+      );
+    case ConfirmStatus.routeName:
+      final file = settings.arguments as File;
+
+      return MaterialPageRoute(
+        builder: (context) => ConfirmStatus(file),
       );
     case ConnectChatPage.routeName:
       final arguments = settings.arguments as Map<String, dynamic>;
